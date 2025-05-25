@@ -10,7 +10,8 @@ import self.rate.me.compose.application.ui.composables.tabs.DailyScreen
 import self.rate.me.compose.application.ui.composables.tabs.NoteScreen
 import self.rate.me.compose.application.ui.composables.tabs.ProfileScreen
 import self.rate.me.compose.application.ui.composables.tabs.WorkoutScreen
-import self.rate.me.compose.application.workout.component.AddWorkoutScreen
+import self.rate.me.compose.application.workout.ui.AddWorkoutScreen
+import self.rate.me.compose.application.workout.ui.WorkoutViewModel
 
 
 /**
@@ -19,7 +20,7 @@ import self.rate.me.compose.application.workout.component.AddWorkoutScreen
  * @param navController The navigation controller used for handling navigation between screens.
  */
 @Composable
-fun NavigationScreens(navController: NavHostController) {
+fun NavigationScreens(workoutViewModel : WorkoutViewModel, navController: NavHostController) {
 
 
     NavHost(navController, startDestination = NavItem.Daily.path) {
@@ -33,7 +34,7 @@ fun NavigationScreens(navController: NavHostController) {
         composable(NavItem.Profile.path) { ProfileScreen() }
 
         composable(ADD_WORKOUT) {
-            AddWorkoutScreen{
+            AddWorkoutScreen(viewModel = workoutViewModel){
                 navController.popBackStack()
             }
         }

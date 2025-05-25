@@ -67,6 +67,14 @@ dependencies {
     implementation  ("androidx.compose.foundation:foundation:1.5.0")
     implementation  ("androidx.compose.material3:material3:1.1.1")
 
+    // live data dependency
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
+    implementation("androidx.compose.runtime:runtime:1.7.8")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.7.8")
+
+
     implementation(libs.kotlinx.serialization.json)
 
     // Dagger Hilt for Dependency Injection
