@@ -99,9 +99,9 @@ fun ExcerciseCard( excercise: ExcerciseType) {
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
 
-//                    excercise.tags?.forEach { tag ->
-//                        ExcerciseTags(label = tag)
-//                    }
+                    excercise.tags.forEach { tag ->
+                        ExcerciseTags(label = tag)
+                    }
 
                 }
             }

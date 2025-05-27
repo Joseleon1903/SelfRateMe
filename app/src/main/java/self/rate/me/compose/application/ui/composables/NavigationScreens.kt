@@ -1,5 +1,7 @@
 package self.rate.me.compose.application.ui.composables
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,6 +21,7 @@ import self.rate.me.compose.application.workout.ui.WorkoutViewModel
  *
  * @param navController The navigation controller used for handling navigation between screens.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationScreens(workoutViewModel : WorkoutViewModel, navController: NavHostController) {
 
@@ -26,7 +29,7 @@ fun NavigationScreens(workoutViewModel : WorkoutViewModel, navController: NavHos
     NavHost(navController, startDestination = NavItem.Daily.path) {
         //bottom navigation page
         composable(NavItem.Daily.path) { DailyScreen() }
-        composable(NavItem.Workout.path) { WorkoutScreen(){
+        composable(NavItem.Workout.path) { WorkoutScreen(viewModel = workoutViewModel){
             navController.navigate("ADD_WORKOUT")
          }
         }

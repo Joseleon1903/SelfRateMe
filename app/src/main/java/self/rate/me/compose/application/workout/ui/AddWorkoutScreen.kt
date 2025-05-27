@@ -2,24 +2,33 @@ package self.rate.me.compose.application.workout.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.material3.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-//import androidx.compose.material.Button
-//import androidx.compose.material.ButtonDefaults
-//import androidx.compose.material.DropdownMenuItem
-//import androidx.compose.material.ExperimentalMaterialApi
-//import androidx.compose.material.ExposedDropdownMenuBox
-//import androidx.compose.material.ExposedDropdownMenuDefaults
-//import androidx.compose.material.OutlinedTextField
-//import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import self.rate.me.compose.application.R
 import self.rate.me.compose.application.ui.composables.CustomTopAppBar
+import self.rate.me.compose.application.workout.component.DaySelector
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -74,108 +84,89 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
 
         /// formulario
 
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(top = 300.dp)
-//                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
-//                .background(Color.White)
-//                .padding(16.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text("Exercise", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF512DA8))
-//            Text("Enter your workout information", fontSize = 14.sp, color = Color.Gray)
-//
-//            Spacer(modifier = Modifier.height(16.dp))
-//            OutlinedTextField(
-//                value = name,
-//                onValueChange = {  viewModel.onValueViewChange(it, quantity, selectedDay, rememberMe) },
-//                label = { Text("Escercise Name") },
-//                modifier = Modifier.fillMaxWidth(),
-//                trailingIcon = {
-//                    Icon(Icons.Default.Check, contentDescription = null)
-//                }
-//            )
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            OutlinedTextField(
-//                value = quantity,
-//                onValueChange = {  viewModel.onValueViewChange(name, it, selectedDay, rememberMe) },
-//                label = { Text("Reps Quantity") },
-//                modifier = Modifier.fillMaxWidth(),
-//                trailingIcon = {
-//                    Icon(Icons.Default.Check, contentDescription = null)
-//                }
-//            )
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            // ComboBox: Día de la semana
-//            ExposedDropdownMenuBox(
-//                expanded = expanded,
-//                onExpandedChange = { expanded = !expanded }
-//            ) {
-//                OutlinedTextField(
-//                    value = selectedDay,
-//                    onValueChange = {},
-//                    readOnly = true,
-//                    label = { Text("Day of the week") },
-//                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//                ExposedDropdownMenu(
-//                    expanded = expanded,
-//                    onDismissRequest = { expanded = false }
-//                ) {
-//                    daysOfWeek.forEach { day ->
-//                        DropdownMenuItem(onClick = {
-//                            viewModel.onValueViewChange(name, quantity, day, rememberMe)
-//                            expanded = false
-//                        }) {
-//                            Text(text = day)
-//                        }
-//                    }
-//                }
-//            }
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.SpaceBetween
-//            ) {
-//                Row(verticalAlignment = Alignment.CenterVertically) {
-//                    Checkbox(
-//                        checked = rememberMe,
-//                        onCheckedChange =  {  viewModel.onValueViewChange(name, quantity, selectedDay, it) }
-//                    )
-//                    Text("Remember me", fontSize = 14.sp)
-//                }
-//
-//            }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 300.dp)
+                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                .background(Color.White)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Exercise", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF512DA8))
+            Text("Enter your workout information", fontSize = 14.sp, color = Color.Gray)
+
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = name,
+                onValueChange = {  viewModel.onValueViewChange(it, quantity, selectedDay, rememberMe) },
+                label = { Text("Escercise Name") },
+                modifier = Modifier.fillMaxWidth(),
+                trailingIcon = {
+                    Icon(Icons.Default.Check, contentDescription = null)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedTextField(
+                value = quantity,
+                onValueChange = {  viewModel.onValueViewChange(name, it, selectedDay, rememberMe) },
+                label = { Text("Reps Quantity") },
+                modifier = Modifier.fillMaxWidth(),
+                trailingIcon = {
+                    Icon(Icons.Default.Check, contentDescription = null)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // ComboBox: Día de la semana
+
+            DaySelector( daysOfWeek = daysOfWeek,
+                            name =  name,
+                            quantity = quantity,
+                            rememberMe = rememberMe,
+                            viewModel= viewModel)
+
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = rememberMe,
+                        onCheckedChange =  {  viewModel.onValueViewChange(name, quantity, selectedDay, it) }
+                    )
+                    Text("Always apply", fontSize = 14.sp)
+                }
+
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = { /* Handle submit */
+                    viewModel.submitForm()
+                    navigateToScreen()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(),
+                shape = RoundedCornerShape(25.dp)
+            ) {
+                Text("Add", color = Color.White)
+            }
 //
 //            Spacer(modifier = Modifier.height(16.dp))
 //
-//            Button(
-//                onClick = { /* Handle submit */
-//                    { scope.launch {  viewModel.submitForm() } }
-//                    navigateToScreen()
-//                },
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(50.dp),
-//                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF512DA8)),
-//                shape = RoundedCornerShape(25.dp)
-//            ) {
-//                Text("Add", color = Color.White)
-//            }
-////
-////            Spacer(modifier = Modifier.height(16.dp))
-////
-////            Text("Or Login with", color = Color.Gray, fontSize = 14.sp)
-//        }
+//            Text("Or Login with", color = Color.Gray, fontSize = 14.sp)
+        }
 
 
     }
@@ -184,6 +175,8 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
 }
 
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun AddWorkoutPreview() {

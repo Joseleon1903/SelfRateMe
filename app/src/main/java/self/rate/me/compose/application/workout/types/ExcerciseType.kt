@@ -5,6 +5,6 @@ data class ExcerciseType(val id : Int,
                          val lastRepetitionQuantity: Int,
                          val quantity: Int,
                          val pending: Int,
-                         val status: ExcerciseEstatus
-
+                         val status: ExcerciseEstatus,
+                         val tags: List<String>
 )

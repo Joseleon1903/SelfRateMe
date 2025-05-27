@@ -11,18 +11,18 @@ class ExcerciseMapper {
 
         fun toDomain(entity : ExerciseEntity): ExcerciseType{
             return ExcerciseType(entity.id, entity.title, entity.lastRepetitionQuantity,entity.quantity, entity.pending,
-                StatusMapper.toDomain(entity.status))
+                StatusMapper.toDomain(entity.status), entity.tags)
         }
 
         fun toEntity(entity : ExcerciseType):ExerciseEntity{
             return ExerciseEntity(entity.id, entity.title, entity.lastRepetitionQuantity,entity.quantity, entity.pending,
-                StatusMapper.toEntity(entity.status))
+                StatusMapper.toEntity(entity.status), entity.tags)
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        fun toNew(title: String?,lastRepetitionQuantity: Int,quantity: Int ,pending: Int,status: String,tags : List<String>?): ExerciseEntity{
+        fun toNew(title: String?,lastRepetitionQuantity: Int,quantity: Int ,pending: Int,status: String,tags : List<String>): ExerciseEntity{
             return ExerciseEntity(0 ,title.orEmpty(), lastRepetitionQuantity,quantity,
-                pending , status )
+                pending , status, tags )
         }
     }
 }

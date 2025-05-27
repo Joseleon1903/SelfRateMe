@@ -13,5 +13,5 @@ data class ExerciseEntity(
     @ColumnInfo(name = "quantity")val quantity: Int,
     @ColumnInfo(name = "pending") val pending: Int,
     @ColumnInfo(name = "status") val status: String,
-    //@ColumnInfo(name = "tags") val tags: List<String>?
+    @ColumnInfo(name = "tags") val tags: List<String>
 )
