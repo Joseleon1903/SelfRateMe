@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +33,7 @@ import self.rate.me.compose.application.workout.types.ExcerciseType
 fun ExcerciseCard( excercise: ExcerciseType) {
 
     Card(
-        elevation = 4.dp,
+//        elevation = 4.dp,
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -65,20 +65,20 @@ fun ExcerciseCard( excercise: ExcerciseType) {
                 ) {
                     Text(
                         text = excercise.title,
-                        style = MaterialTheme.typography.subtitle1,
+                        style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = "${excercise.lastRepetitionQuantity} last reps",
                         color = Color.Red,
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
 
                 Text(
                     text = "Quantity ${excercise.pending}",
-                    style = MaterialTheme.typography.body2
+                    style = MaterialTheme.typography.bodySmall
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
@@ -90,7 +90,7 @@ fun ExcerciseCard( excercise: ExcerciseType) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text ="${excercise.status.name}",
-                        style = MaterialTheme.typography.body2
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
 
@@ -99,9 +99,9 @@ fun ExcerciseCard( excercise: ExcerciseType) {
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
 
-                    excercise.tags?.forEach { tag ->
-                        ExcerciseTags(label = tag)
-                    }
+//                    excercise.tags?.forEach { tag ->
+//                        ExcerciseTags(label = tag)
+//                    }
 
                 }
             }

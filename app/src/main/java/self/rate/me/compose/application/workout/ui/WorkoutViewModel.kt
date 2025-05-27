@@ -1,13 +1,18 @@
 package self.rate.me.compose.application.workout.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import self.rate.me.compose.application.workout.cases.WorkoutRegisterUseCase
+import self.rate.me.compose.application.workout.types.ExcerciseEstatus
+import self.rate.me.compose.application.workout.types.ExcerciseType
 import javax.inject.Inject
 
 @HiltViewModel
-class WorkoutViewModel  @Inject constructor() : ViewModel(){
+class WorkoutViewModel  @Inject constructor(private val register: WorkoutRegisterUseCase) : ViewModel(){
 
     private val _name = MutableLiveData<String>();
     val name : LiveData<String> = _name;
@@ -32,14 +37,20 @@ class WorkoutViewModel  @Inject constructor() : ViewModel(){
         _rememberMe.value = rememberMe;
     }
 
-    fun submitForm(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun submitForm(){
         println("entering in submitForm")
         println("param: ${name.value}")
         println("param: ${quantity.value}")
         println("param: ${selectedDay.value}")
         println("param: ${rememberMe.value}")
 
+        val quantiryNum= quantity.value?.toInt()
 
+        val newExcerciseType = ExcerciseType(0, name.value.orEmpty(),0, 1,1, ExcerciseEstatus.PENDING)
+        val result = register.invoke(newExcerciseType)
+
+        println("el resultado fue $result")
 
     }
 

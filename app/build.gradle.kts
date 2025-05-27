@@ -2,8 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlinKapt)
-    alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -43,6 +44,9 @@ android {
 
 dependencies {
 
+    val room_version = "2.7.0"
+
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -51,6 +55,29 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.material.icons.extended.v151)
+
+    //view model dependency
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation("androidx.compose.runtime:runtime:1.7.8")
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
+    implementation("androidx.compose.runtime:runtime-rxjava2:1.7.8")
+
+    // room dependency
+    // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
+    // See Add the KSP plugin to your project
+    ksp("androidx.room:room-compiler:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+
+    //dependency injection
+    implementation("com.google.dagger:hilt-android:2.56.1")
+    ksp("com.google.dagger:hilt-android-compiler:2.56.1")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -59,29 +86,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation ("androidx.compose.ui:ui:1.5.0")
-    implementation  ("androidx.compose.material:material:1.5.0")
-    implementation  ("androidx.compose.ui:ui-tooling-preview:1.5.0")
-    implementation  ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation  ("androidx.activity:activity-compose:1.7.2")
-    implementation  ("androidx.compose.foundation:foundation:1.5.0")
-    implementation  ("androidx.compose.material3:material3:1.1.1")
+    implementation ("com.google.code.gson:gson:2.8.6")
 
-    // live data dependency
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.0")
-    implementation("androidx.compose.runtime:runtime:1.7.8")
-    implementation("androidx.compose.runtime:runtime-livedata:1.7.8")
-    implementation("androidx.compose.runtime:runtime-rxjava2:1.7.8")
-
-
-    implementation(libs.kotlinx.serialization.json)
-
-    // Dagger Hilt for Dependency Injection
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
-    // Navigation Compose
-    implementation(libs.navigation.compose)
 
 }
