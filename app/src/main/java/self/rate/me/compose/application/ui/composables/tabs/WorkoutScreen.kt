@@ -16,10 +16,8 @@ import self.rate.me.compose.application.workout.component.CompleteSection
 import self.rate.me.compose.application.workout.component.CreateFloatButton
 import self.rate.me.compose.application.workout.component.ExcerciseCard
 import self.rate.me.compose.application.workout.component.WeekStatusSection
-import self.rate.me.compose.application.workout.types.CompleteInfo
-import self.rate.me.compose.application.workout.types.CurrentWeekInfo
-import self.rate.me.compose.application.workout.types.ExcerciseEstatus
-import self.rate.me.compose.application.workout.types.ExcerciseType
+import self.rate.me.compose.application.workout.data.CompleteInfo
+import self.rate.me.compose.application.workout.data.CurrentWeekInfo
 import self.rate.me.compose.application.workout.ui.WorkoutViewModel
 import androidx.compose.runtime.getValue
 

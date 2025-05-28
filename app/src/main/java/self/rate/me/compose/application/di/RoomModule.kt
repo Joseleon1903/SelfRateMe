@@ -26,4 +26,8 @@ object RoomModule {
     @Provides
     fun provideExerciseDao(db : SelfRateMeDataBase) = db.getExcerciseDao()
 
+    @Singleton
+    @Provides
+    fun provideNoteDao(db : SelfRateMeDataBase) = db.getNoteDao()
+
 }

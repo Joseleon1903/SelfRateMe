@@ -1,13 +1,11 @@
-package self.rate.me.compose.application.workout.ui
+package self.rate.me.compose.application.note.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,17 +16,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,23 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import self.rate.me.compose.application.R
 import self.rate.me.compose.application.ui.composables.CustomTopAppBar
-import self.rate.me.compose.application.workout.component.DaySelector
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit) {
+fun AddNoteScreen(viewModel : NoteViewModel, navigateToScreen : () -> Unit) {
 
-    val name : String by viewModel.name.observeAsState( initial = "")
+    val title : String by viewModel.title.observeAsState( initial = "")
 
-    val quantity : String by viewModel.quantity.observeAsState( initial = "")
-
-    val selectedDay : String by viewModel.selectedDay.observeAsState( initial = "")
-
-    val rememberMe: Boolean by viewModel.rememberMe.observeAsState( initial = false)
-   // ComboBox: Día de la semana
-    val daysOfWeek : List<String> by viewModel.daysOfWeek.observeAsState( initial = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
-    var expanded by remember { mutableStateOf(false) }
-
+    val content : String by viewModel.content.observeAsState( initial = "")
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -66,10 +50,10 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CustomTopAppBar("Add Workout", navigateToScreen)
+            CustomTopAppBar("Add Note", navigateToScreen)
 
             Image(
-                painter = painterResource(id = R.drawable.gimnastic_body), // imagen tipo autopista nocturna
+                painter = painterResource(id = R.drawable.note_taking), // imagen tipo autopista nocturna
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -89,14 +73,24 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Exercise", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color(0xFF512DA8))
+            Text(
+                "Exercise",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF512DA8)
+            )
             Text("Enter your workout information", fontSize = 14.sp, color = Color.Gray)
 
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
-                value = name,
-                onValueChange = {  viewModel.onValueViewChange(it, quantity, selectedDay, rememberMe) },
-                label = { Text("Escercise Name") },
+                value = title,
+                onValueChange = {
+                    viewModel.onValueViewChange(
+                        it,
+                        content
+                    )
+                },
+                label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     Icon(Icons.Default.Check, contentDescription = null)
@@ -106,9 +100,9 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = quantity,
-                onValueChange = {  viewModel.onValueViewChange(name, it, selectedDay, rememberMe) },
-                label = { Text("Reps Quantity") },
+                value = content,
+                onValueChange = { viewModel.onValueViewChange( title, it) },
+                label = { Text("Content") },
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     Icon(Icons.Default.Check, contentDescription = null)
@@ -116,34 +110,6 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-
-            // ComboBox: Día de la semana
-
-            DaySelector( daysOfWeek = daysOfWeek,
-                            name =  name,
-                            quantity = quantity,
-                            rememberMe = rememberMe,
-                            viewModel= viewModel)
-
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(
-                        checked = rememberMe,
-                        onCheckedChange =  {  viewModel.onValueViewChange(name, quantity, selectedDay, it) }
-                    )
-                    Text("Always apply", fontSize = 14.sp)
-                }
-
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = { /* Handle submit */
@@ -160,20 +126,18 @@ fun AddWorkoutScreen(viewModel : WorkoutViewModel, navigateToScreen : () -> Unit
             }
         }
 
-
     }
+
 
 
 }
 
-
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun AddWorkoutPreview() {
+fun AddNotePreview() {
 
-    AddWorkoutScreen(viewModel = TODO()){
+    AddNoteScreen(viewModel = TODO()){
         println("Navigate back")
     }
 

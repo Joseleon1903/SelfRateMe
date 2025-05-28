@@ -7,7 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import self.rate.me.compose.application.nav.NavItem
+import self.rate.me.compose.application.nav.NavTitle.ADD_NOTE
 import self.rate.me.compose.application.nav.NavTitle.ADD_WORKOUT
+import self.rate.me.compose.application.note.ui.AddNoteScreen
+import self.rate.me.compose.application.note.ui.NoteViewModel
 import self.rate.me.compose.application.ui.composables.tabs.DailyScreen
 import self.rate.me.compose.application.ui.composables.tabs.NoteScreen
 import self.rate.me.compose.application.ui.composables.tabs.ProfileScreen
@@ -23,7 +26,7 @@ import self.rate.me.compose.application.workout.ui.WorkoutViewModel
  */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavigationScreens(workoutViewModel : WorkoutViewModel, navController: NavHostController) {
+fun NavigationScreens(workoutViewModel : WorkoutViewModel,noteViewModel : NoteViewModel, navController: NavHostController) {
 
 
     NavHost(navController, startDestination = NavItem.Daily.path) {
@@ -33,11 +36,20 @@ fun NavigationScreens(workoutViewModel : WorkoutViewModel, navController: NavHos
             navController.navigate("ADD_WORKOUT")
          }
         }
-        composable(NavItem.Task.path) { NoteScreen() }
+        composable(NavItem.Task.path) { NoteScreen( viewModel= noteViewModel ){
+            navController.navigate("ADD_NOTE")
+          }
+        }
         composable(NavItem.Profile.path) { ProfileScreen() }
 
         composable(ADD_WORKOUT) {
             AddWorkoutScreen(viewModel = workoutViewModel){
+                navController.popBackStack()
+            }
+        }
+
+        composable(ADD_NOTE) {
+            AddNoteScreen(viewModel = noteViewModel){
                 navController.popBackStack()
             }
         }

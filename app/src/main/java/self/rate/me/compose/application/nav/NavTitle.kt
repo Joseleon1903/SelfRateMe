@@ -6,4 +6,5 @@ object NavTitle {
     const val NOTE = "Note"
     const val PROFILE = "Profile"
     const val ADD_WORKOUT = "add_workout"
+    const val ADD_NOTE = "add_note"
 }

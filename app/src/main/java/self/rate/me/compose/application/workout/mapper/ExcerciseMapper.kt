@@ -3,7 +3,7 @@ package self.rate.me.compose.application.workout.mapper
 import android.os.Build
 import androidx.annotation.RequiresApi
 import self.rate.me.compose.application.database.entity.ExerciseEntity
-import self.rate.me.compose.application.workout.types.ExcerciseType
+import self.rate.me.compose.application.workout.data.ExcerciseType
 
 class ExcerciseMapper {
 

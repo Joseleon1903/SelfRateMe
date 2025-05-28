@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import self.rate.me.compose.application.R
-import self.rate.me.compose.application.workout.types.ExcerciseType
+import self.rate.me.compose.application.workout.data.ExcerciseType
 
 @Composable
 fun ExcerciseCard( excercise: ExcerciseType) {

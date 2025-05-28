@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import self.rate.me.compose.application.database.dao.ExcerciseDao
 import self.rate.me.compose.application.workout.mapper.ExcerciseMapper
-import self.rate.me.compose.application.workout.types.ExcerciseEstatus
-import self.rate.me.compose.application.workout.types.ExcerciseType
+import self.rate.me.compose.application.workout.data.ExcerciseEstatus
+import self.rate.me.compose.application.workout.data.ExcerciseType
 import javax.inject.Inject
 
 class ExcerciseRepository @Inject constructor(

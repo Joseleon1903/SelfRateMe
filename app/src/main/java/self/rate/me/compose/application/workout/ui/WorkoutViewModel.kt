@@ -2,8 +2,6 @@ package self.rate.me.compose.application.workout.ui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,8 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import self.rate.me.compose.application.database.repo.ExcerciseRepository
 import self.rate.me.compose.application.workout.cases.WorkoutRegisterUseCase
-import self.rate.me.compose.application.workout.types.ExcerciseEstatus
-import self.rate.me.compose.application.workout.types.ExcerciseType
+import self.rate.me.compose.application.workout.data.ExcerciseEstatus
+import self.rate.me.compose.application.workout.data.ExcerciseType
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)

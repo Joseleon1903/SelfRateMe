@@ -2,6 +2,6 @@
     <string name="app_name">SelfRateMe</string>
     <string name="daily">Daily</string>
     <string name="workout">Workout</string>
-    <string name="task">Task</string>
+    <string name="note">Note</string>
     <string name="profile">Profile</string>
 </resources>

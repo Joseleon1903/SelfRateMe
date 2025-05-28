@@ -1,4 +1,4 @@
-package self.rate.me.compose.application.workout.types
+package self.rate.me.compose.application.workout.data
 
 data class ExcerciseType(val id : Int,
                          val title: String,

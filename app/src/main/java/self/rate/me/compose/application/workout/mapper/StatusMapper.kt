@@ -1,6 +1,6 @@
 package self.rate.me.compose.application.workout.mapper
 
-import self.rate.me.compose.application.workout.types.ExcerciseEstatus
+import self.rate.me.compose.application.workout.data.ExcerciseEstatus
 import java.util.Locale
 
 class StatusMapper {

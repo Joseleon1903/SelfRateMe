@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import self.rate.me.compose.application.workout.types.CurrentWeekInfo
+import self.rate.me.compose.application.workout.data.CurrentWeekInfo
 import androidx.compose.material3.Icon
 
 

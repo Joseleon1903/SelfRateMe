@@ -3,7 +3,7 @@ package self.rate.me.compose.application.workout.cases
 import android.os.Build
 import androidx.annotation.RequiresApi
 import self.rate.me.compose.application.database.repo.ExcerciseRepository
-import self.rate.me.compose.application.workout.types.ExcerciseType
+import self.rate.me.compose.application.workout.data.ExcerciseType
 import javax.inject.Inject
 
 class WorkoutRegisterUseCase @Inject constructor (private val exerciseRepository: ExcerciseRepository) {
