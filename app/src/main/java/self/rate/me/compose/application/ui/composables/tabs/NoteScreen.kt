@@ -1,5 +1,7 @@
 package self.rate.me.compose.application.ui.composables.tabs
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -19,6 +22,7 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,17 +41,21 @@ import self.rate.me.compose.application.note.component.NoteCard
 import self.rate.me.compose.application.note.ui.NoteViewModel
 import self.rate.me.compose.application.ui.theme.md_theme_light_inversePrimary
 import self.rate.me.compose.application.ui.theme.typography
+import self.rate.me.compose.application.workout.component.ExcerciseCard
 import self.rate.me.compose.application.workout.ui.WorkoutViewModel
 
 /**
  * Composable function that represents the list screen of the application.
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
 
     val brands = listOf("Note", "Date", "Nearest event", "Bills")
 
     var selectedBrand by remember { mutableStateOf("Note") }
+
+    val notes by viewModel.note.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize().padding(top = 20.dp)) {
 
@@ -90,7 +98,14 @@ fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
                 }
             }
 
-            NoteCard(title= "Ejmeplo", content= "ejemplo texto", date= "12 agosto 2025", backgroundColor= Color.Yellow)
+            LazyColumn {
+                items(count = notes.size) { index ->
+                    val ex = notes[index]
+                    NoteCard(title= ex.title, content= ex.content, date= ex.creationDate, backgroundColor= Color.Yellow)
+                }
+            }
+
+
 
         }
 
