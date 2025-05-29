@@ -6,42 +6,46 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import self.rate.me.compose.application.R
+import self.rate.me.compose.application.note.component.BillsFormContent
+import self.rate.me.compose.application.note.component.EventFormContent
+import self.rate.me.compose.application.note.component.FormNoteContent
 import self.rate.me.compose.application.ui.composables.CustomTopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddNoteScreen(viewModel : NoteViewModel, navigateToScreen : () -> Unit) {
 
-    val title : String by viewModel.title.observeAsState( initial = "")
+    var selectedType by remember { mutableStateOf("Note") }
 
-    val content : String by viewModel.content.observeAsState( initial = "")
+    val formTypes = listOf( "Note", "Event", "Bill")
+    var expanded by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -62,8 +66,6 @@ fun AddNoteScreen(viewModel : NoteViewModel, navigateToScreen : () -> Unit) {
             )
         }
 
-        /// formulario
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,58 +75,55 @@ fun AddNoteScreen(viewModel : NoteViewModel, navigateToScreen : () -> Unit) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                "Exercise",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF512DA8)
-            )
-            Text("Enter your workout information", fontSize = 14.sp, color = Color.Gray)
+            Text("Selecciona el tipo de formulario", style = MaterialTheme.typography.titleMedium)
 
-            Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
-                value = title,
-                onValueChange = {
-                    viewModel.onValueViewChange(
-                        it,
-                        content
+
+            Box {
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
+                ) {
+                    OutlinedTextField(
+                        value = selectedType,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Tipo de formulario") },
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                        },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth()
                     )
-                },
-                label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    Icon(Icons.Default.Check, contentDescription = null)
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        formTypes.forEach { selectionOption ->
+                            DropdownMenuItem(
+                                text = { Text(selectionOption) },
+                                onClick = {
+                                    selectedType = selectionOption
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
                 }
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = content,
-                onValueChange = { viewModel.onValueViewChange( title, it) },
-                label = { Text("Content") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    Icon(Icons.Default.Check, contentDescription = null)
-                }
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = { /* Handle submit */
-                    viewModel.submitForm()
-                    navigateToScreen()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(),
-                shape = RoundedCornerShape(25.dp)
-            ) {
-                Text("Add", color = Color.White)
             }
+
+            // Formulario dinámico
+            when (selectedType) {
+                "Note" -> FormNoteContent(viewModel= viewModel, navigateToScreen= navigateToScreen)
+                "Event" -> EventFormContent(viewModel= viewModel, navigateToScreen= navigateToScreen)
+                "Bill" -> BillsFormContent(viewModel= viewModel, navigateToScreen= navigateToScreen)
+                else -> Text("Selecciona un tipo de formulario para comenzar.")
+            }
+
         }
+
+
 
     }
 

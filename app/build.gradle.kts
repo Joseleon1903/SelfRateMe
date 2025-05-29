@@ -88,5 +88,8 @@ dependencies {
 
     implementation ("com.google.code.gson:gson:2.8.6")
 
+    implementation ("androidx.compose.material3:material3:1.2.0")// Ej: 1.2.0 o superior
+
+
 
 }

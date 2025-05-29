@@ -51,9 +51,9 @@ import self.rate.me.compose.application.workout.ui.WorkoutViewModel
 @Composable
 fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
 
-    val brands = listOf("Note", "Date", "Nearest event", "Bills")
+    val brands = listOf("All","Note", "Nearest event", "Bills")
 
-    var selectedBrand by remember { mutableStateOf("Note") }
+    var selectedBrand by remember { mutableStateOf("All") }
 
     val notes by viewModel.note.collectAsState()
 
