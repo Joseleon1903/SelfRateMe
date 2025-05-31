@@ -126,19 +126,11 @@ fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
                 Text("Add", color = Color.DarkGray)
             }
         }
-//        CreateFloatButton( navigateToScreen = TODO());
-
-//        Text(
-//            text = stringResource(id = R.string.note),
-//            style = typography.titleLarge,
-//            color = md_theme_light_inversePrimary
-//        )
-
-
 
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun NoteScreenPreview() {

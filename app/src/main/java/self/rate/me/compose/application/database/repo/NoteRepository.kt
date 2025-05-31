@@ -21,7 +21,11 @@ class NoteRepository @Inject constructor(
                     id = en.id,
                     title = en.title,
                     content = en.content,
-                    creationDate = en.creationDate.toString()
+                    creationDate = en.creationDate.toString(),
+                    type = "Note",
+                    eventDate = null,
+                    billsDate = null,
+                    billsAmount = Double.NaN
                 )
             }
         }

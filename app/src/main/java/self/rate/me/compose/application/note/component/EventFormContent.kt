@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,8 +33,9 @@ import self.rate.me.compose.application.note.ui.NoteViewModel
 @Composable
 fun EventFormContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit ) {
 
-    var eventName by remember { mutableStateOf("") }
-    var eventDate by remember { mutableStateOf("") }
+    val eventName by viewModel.title.observeAsState( initial = "")
+    val eventDate by viewModel.eventDate.observeAsState( initial = "")
+    val eventContent by viewModel.content.observeAsState( initial = "")
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -51,17 +53,26 @@ fun EventFormContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit )
         )
         Text("Enter your Event information", fontSize = 14.sp, color = Color.Gray)
 
+
+
         OutlinedTextField(
             value = eventName,
-            onValueChange = { eventName = it },
+            onValueChange = { viewModel.onValueViewChange(it,eventContent, "" )  },
             label = { Text("Nombre del evento") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = eventContent,
+            onValueChange = { viewModel.onValueViewChange(eventName,it, "" ) },
+            label = { Text("Contenido del evento") },
             modifier = Modifier.fillMaxWidth()
         )
 
         DatePickerField(
             label = "Fecha evento",
             selectedDate = eventDate,
-            onDateSelected = { eventDate = it }
+            onDateSelected = { viewModel.onValueDateChange(it, "") },
         )
 
 

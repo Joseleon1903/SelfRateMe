@@ -3,7 +3,6 @@ package self.rate.me.compose.application.note.component
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,9 +16,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,8 +30,12 @@ import self.rate.me.compose.application.note.ui.NoteViewModel
 @Composable
 fun BillsFormContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit ) {
 
-    var billAmount by remember { mutableStateOf("") }
-    var dueDate by remember { mutableStateOf("") }
+    val billAmount by viewModel.billsAmount.observeAsState( initial = "")
+    val dueDate by viewModel.billsDate.observeAsState( initial = "")
+
+    val title by viewModel.title.observeAsState( initial = "")
+
+    val content by viewModel.content.observeAsState( initial = "")
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -52,8 +53,22 @@ fun BillsFormContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit )
         Text("Enter your Bills information", fontSize = 14.sp, color = Color.Gray)
 
         OutlinedTextField(
+            value = title,
+            onValueChange = { viewModel.onValueViewChange(it,content, billAmount) },
+            label = { Text("Title") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = content,
+            onValueChange = { viewModel.onValueViewChange(title,it, billAmount)  },
+            label = { Text("Content") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
             value = billAmount,
-            onValueChange = { billAmount = it },
+            onValueChange = { viewModel.onValueViewChange(title,content, it)  },
             label = { Text("Monto") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -61,7 +76,7 @@ fun BillsFormContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit )
         DatePickerField(
             label = "Fecha evento",
             selectedDate = dueDate,
-            onDateSelected = { dueDate = it }
+            onDateSelected = { viewModel.onValueDateChange("",it ) }
         )
 
 

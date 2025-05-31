@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import self.rate.me.compose.application.note.ui.NoteViewModel
 import java.util.Calendar
 
 @Composable
@@ -54,17 +55,4 @@ fun DatePickerField(label: String, selectedDate: String, onDateSelected: (String
         }
     )
 
-//    Button(
-//        onClick = { /* Handle submit */
-//            println("show datePicker")
-//            datePickerDialog.show()
-//        },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(50.dp),
-//        colors = ButtonDefaults.buttonColors(),
-//        shape = RoundedCornerShape(25.dp)
-//    ) {
-//        Text("show", color = Color.White)
-//    }
 }

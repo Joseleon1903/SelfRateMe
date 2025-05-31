@@ -13,7 +13,13 @@ class NoteMapper {
     companion object {
 
         fun toDomain(entity : NoteEntity): Note{
-            return Note(entity.id, entity.title,entity.content, entity.creationDate.toString())
+            return Note(
+                entity.id, entity.title, entity.content, entity.creationDate.toString(),
+                creationDate = TODO(),
+                eventDate = TODO(),
+                billsDate = TODO(),
+                billsAmount = TODO()
+            )
         }
 
         @RequiresApi(Build.VERSION_CODES.O)

@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,7 +60,8 @@ fun FormNoteContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit ) 
             onValueChange = {
                 viewModel.onValueViewChange(
                     it,
-                    content
+                    content,
+                    ""
                 )
             },
             label = { Text("Title") },
@@ -75,7 +75,7 @@ fun FormNoteContent(viewModel : NoteViewModel,  navigateToScreen : () -> Unit ) 
 
         OutlinedTextField(
             value = content,
-            onValueChange = { viewModel.onValueViewChange( title, it) },
+            onValueChange = { viewModel.onValueViewChange( title, it, "") },
             label = { Text("Content") },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {

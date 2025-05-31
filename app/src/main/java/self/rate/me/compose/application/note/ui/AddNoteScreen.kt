@@ -20,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,7 +43,7 @@ import self.rate.me.compose.application.ui.composables.CustomTopAppBar
 @Composable
 fun AddNoteScreen(viewModel : NoteViewModel, navigateToScreen : () -> Unit) {
 
-    var selectedType by remember { mutableStateOf("Note") }
+    val selectedType : String by viewModel.selectedType.observeAsState( initial = "Note")
 
     val formTypes = listOf( "Note", "Event", "Bill")
     var expanded by remember { mutableStateOf(false) }
@@ -104,7 +105,7 @@ fun AddNoteScreen(viewModel : NoteViewModel, navigateToScreen : () -> Unit) {
                             DropdownMenuItem(
                                 text = { Text(selectionOption) },
                                 onClick = {
-                                    selectedType = selectionOption
+                                    viewModel.onValueTypeSelectedChange(selectionOption)
                                     expanded = false
                                 }
                             )
