@@ -22,6 +22,19 @@ class NoteFactory {
             )
         }
 
+        fun toCreateEmptyNote(): Note{
+            return Note(
+                id = 0,
+                title = "",
+                type = "",
+                content = "",
+                creationDate ="",
+                eventDate = null,
+                billsDate = null,
+                billsAmount = null
+            )
+        }
+
         fun toCreateEvent(title: String,
                          type: String,
                          content: String,

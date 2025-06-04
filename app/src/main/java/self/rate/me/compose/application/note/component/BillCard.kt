@@ -27,11 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import self.rate.me.compose.application.note.data.Note
 
+
 @Composable
-fun NoteCard(note: Note, OnDelete: () -> Unit) {
+fun BillCard(note: Note, OnDelete: () -> Unit) {
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.Yellow),
+        colors = CardDefaults.cardColors(containerColor = Color.Gray),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier
@@ -50,15 +51,22 @@ fun NoteCard(note: Note, OnDelete: () -> Unit) {
             Column(
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = note.title, style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.Bold)
+                Text(text = note.title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                 Text(
-                    text = note.content,
+                    text = note.billsDate.toString(),
                     color = Color.Black,
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.width(150.dp)
+            ) {
+                Text(text = note.billsAmount.toString(), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color.Red)
+            }
 
-            // Iconos de control (dots)
+            // Iconos de control (delete)
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -80,13 +88,13 @@ fun NoteCard(note: Note, OnDelete: () -> Unit) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun NoteCardPreview() {
+fun BillCardPreview() {
 
-    NoteCard(Note(
-       1, "ejemplo","Note", "ejemplo",
+    BillCard(Note(
+        1, "ejemplo","Note", "ejemplo",
         "",
         "",
-        "",
+        "15/05/2025",
         500.60
     )){
         println("delete")

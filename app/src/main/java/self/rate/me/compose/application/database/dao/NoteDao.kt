@@ -1,6 +1,7 @@
 package self.rate.me.compose.application.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,4 +17,6 @@ interface NoteDao {
     @Query("select * from Note_tbl order by id desc")
     fun getAll(): Flow<List<NoteEntity>>
 
+    @Delete
+    fun delete(note: NoteEntity)
 }

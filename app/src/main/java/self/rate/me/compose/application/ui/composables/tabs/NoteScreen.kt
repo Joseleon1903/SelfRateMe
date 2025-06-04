@@ -15,11 +15,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,19 +32,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import self.rate.me.compose.application.R
-import self.rate.me.compose.application.note.component.CreateFloatButton
+import self.rate.me.compose.application.note.component.BillCard
+import self.rate.me.compose.application.note.component.EventCard
 import self.rate.me.compose.application.note.component.NoteCard
+import self.rate.me.compose.application.note.data.Note
+import self.rate.me.compose.application.note.mapper.NoteFactory
 import self.rate.me.compose.application.note.ui.NoteViewModel
-import self.rate.me.compose.application.ui.theme.md_theme_light_inversePrimary
-import self.rate.me.compose.application.ui.theme.typography
-import self.rate.me.compose.application.workout.component.ExcerciseCard
-import self.rate.me.compose.application.workout.ui.WorkoutViewModel
+import self.rate.me.compose.application.ui.composables.dialog.ConfirmDeleteDialog
 
 /**
  * Composable function that represents the list screen of the application.
@@ -51,13 +51,43 @@ import self.rate.me.compose.application.workout.ui.WorkoutViewModel
 @Composable
 fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
 
-    val brands = listOf("All","Note", "Nearest event", "Bills")
+    val brands = listOf("All","Note","Event", "Nearest event", "Bill")
 
     var selectedBrand by remember { mutableStateOf("All") }
 
     val notes by viewModel.note.collectAsState()
 
-    Box(modifier = Modifier.fillMaxSize().padding(top = 20.dp)) {
+    var showDialog by remember { mutableStateOf(false) }
+
+    var selectedNote: Note by remember { mutableStateOf(NoteFactory.toCreateEmptyNote()) }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Delete") },
+            text = {
+                ConfirmDeleteDialog()
+            },
+            confirmButton = {
+                Button(onClick = {
+                    // Aquí puedes procesar el formulario
+                    showDialog = false
+                    viewModel.OndeleteNote(selectedNote)
+                }) {
+                    Text("Yes")
+                }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = { showDialog = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(top = 20.dp)) {
 
         Column(
             modifier = Modifier
@@ -81,7 +111,10 @@ fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
                 brands.forEach { brand ->
                     FilterChip(
                         selected = brand == selectedBrand,
-                        onClick = { selectedBrand = brand },
+                        onClick = {
+                                    selectedBrand = brand;
+                                    viewModel.onFilterChangeValue(brand)
+                                  },
                         label = {
                             Text(
                                 text = brand,
@@ -101,7 +134,26 @@ fun NoteScreen(viewModel : NoteViewModel,navigateToScreen : () -> Unit ) {
             LazyColumn {
                 items(count = notes.size) { index ->
                     val ex = notes[index]
-                    NoteCard(title= ex.title, content= ex.content, date= ex.creationDate, backgroundColor= Color.Yellow)
+                    if(ex.type.equals("Note", true) ||ex.type.isNullOrBlank()){
+                        NoteCard(ex){
+                            println("press delete button")
+                            showDialog = true;
+                            selectedNote = ex;
+                        }
+                    }else if(ex.type.equals("Event", true)){
+                        EventCard(ex){
+                            println("press delete button")
+                            showDialog = true;
+                            selectedNote = ex;
+                        }
+                    }
+                    else if(ex.type.equals("Bill", true)){
+                        BillCard(ex){
+                            println("press delete button")
+                            showDialog = true;
+                            selectedNote = ex;
+                        }
+                    }
                 }
             }
 

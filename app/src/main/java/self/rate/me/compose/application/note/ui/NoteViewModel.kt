@@ -7,8 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import self.rate.me.compose.application.database.repo.NoteRepository
 import self.rate.me.compose.application.database.utils.Converters
@@ -58,6 +62,24 @@ class NoteViewModel  @Inject constructor(private val repository: NoteRepository)
 
     }
 
+    fun onFilterChangeValue(filter: String) {
+        println("filter by $filter")
+
+        // filtrar por parametro
+        viewModelScope.launch {
+
+            repository.notesFlow
+                .collect { listFromDb ->
+                    if(!filter.equals("All")){
+                        val filtered = listFromDb.filter { it.type == filter }
+                        _notes.value = filtered
+                    }else{
+                        _notes.value = listFromDb
+                    }
+                }
+        }
+    }
+
     fun onValueViewChange(title: String, content: String, amount: String) {
         _title.value = title;
         _content.value = content;
@@ -88,7 +110,7 @@ class NoteViewModel  @Inject constructor(private val repository: NoteRepository)
         if(selectedType.value.isNullOrBlank() || selectedType.value.equals("Note", true)){
             println("entering in create Note")
             val newNote = NoteFactory.toCreateNote(title.value.toString(),
-                selectedType.value.toString(), content.value.toString(), Converters().fromLocalDateTime(
+                "Note", content.value.toString(), Converters().fromLocalDateTime(
                                     LocalDateTime.now()).toString())
 
             viewModelScope.launch {
@@ -124,6 +146,14 @@ class NoteViewModel  @Inject constructor(private val repository: NoteRepository)
             }
         }
 
+    }
+
+    fun OndeleteNote( noteid:Note) {
+        println("Entering OndeleteNote")
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteNote(noteid)
+            println("delete note $noteid")
+        }
     }
 
 }
