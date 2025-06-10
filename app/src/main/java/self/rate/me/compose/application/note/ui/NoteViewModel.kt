@@ -25,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel  @Inject constructor(private val repository: NoteRepository) : ViewModel(){
 
-
     private val _title = MutableLiveData<String>();
     val title : LiveData<String> = _title;
 
@@ -41,7 +40,6 @@ class NoteViewModel  @Inject constructor(private val repository: NoteRepository)
     //event form
     private val _eventDate = MutableLiveData<String>();
     val eventDate:  LiveData<String>  = _eventDate
-
 
     //bills form
     private val _billsDate = MutableLiveData<String>();
